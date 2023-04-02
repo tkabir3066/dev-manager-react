@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Contacts from "./contacts/Contacts";
+import Header from "./layouts/Header";
+import { Container } from "react-bootstrap";
 
 const initialContacts = [
   {
@@ -10,6 +12,7 @@ const initialContacts = [
     profession: "Web Developer",
     gender: "Female",
     image: "https://randomuser.me/api/portraits/women/75.jpg",
+    dateOfBirth: "17/05/1996",
     bio: "all about me",
   },
   {
@@ -94,7 +97,10 @@ function App() {
   const [contacts, setContacts] = useState(initialContacts);
   return (
     <>
-      <Contacts contacts={contacts} />
+      <Header />
+      <Container style={{ width: "800px", margin: "0 auto" }} className="pt-5">
+        <Contacts contacts={contacts} />
+      </Container>
     </>
   );
 }

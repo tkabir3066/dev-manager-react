@@ -2,8 +2,9 @@ import React from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 
-function Contact({ contact }) {
+function Contact({ contact, deleteContact }) {
   const {
+    id,
     firstName,
     lastName,
     email,
@@ -43,13 +44,17 @@ function Contact({ contact }) {
           </ListGroup>
 
           <div className="card-btn mt-3">
-            <Card.Link href="#">
+            <Card.Link>
               <Button variant="warning ms-3" size="md" type="view">
                 <FaEye />
               </Button>
             </Card.Link>
-            <Card.Link href="#">
-              <Button variant="danger ms-3" size="md">
+            <Card.Link>
+              <Button
+                variant="danger ms-3"
+                size="md"
+                onClick={() => deleteContact(id)}
+              >
                 <FaTrashAlt />
               </Button>
             </Card.Link>

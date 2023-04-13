@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
-
+import { object } from "yup";
+import { format } from "date-fns";
 function Contact({ contact, deleteContact }) {
   const {
     id,
@@ -39,7 +40,10 @@ function Contact({ contact, deleteContact }) {
               <strong>Email : </strong> {email}
             </ListGroup.Item>
             <ListGroup.Item>
-              <strong>D.O.B : </strong> {dateOfBirth}
+              <strong>D.O.B : </strong>{" "}
+              {dateOfBirth instanceof Object
+                ? format(dateOfBirth, "dd/MM/yyy")
+                : dateOfBirth}
             </ListGroup.Item>
           </ListGroup>
 

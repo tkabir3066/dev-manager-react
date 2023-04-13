@@ -4,6 +4,7 @@ import Header from "./layouts/Header";
 import { Container } from "react-bootstrap";
 import AddContact from "./contacts/AddContact";
 import { v4 as uuidv4 } from "uuid";
+import { ToastContainer } from "react-toastify";
 
 const initialContacts = [
   {
@@ -113,7 +114,20 @@ function App() {
   };
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Header />
+
       <Container style={{ width: "800px", margin: "0 auto" }} className="pt-5">
         <AddContact addContact={addContact} />
         <Contacts contacts={contacts} deleteContact={deleteContact} />

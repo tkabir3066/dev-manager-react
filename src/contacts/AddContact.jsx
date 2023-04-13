@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   firstName: yup
@@ -42,6 +43,17 @@ function AddContact({ addContact }) {
     watch,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({ resolver: yupResolver(schema) });
+
+  const defaultValues = {
+    firstName: "Tutul",
+    lastName: "Kabir",
+    email: "tutulkabir@gmail.com",
+    profession: "webDeveloper",
+    image: "https://randomuser.me/api/portraits/men/85.jpg",
+    bio: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+  };
+
+  const { firstName, lastName, email, profession, image, bio } = defaultValues;
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
@@ -60,7 +72,19 @@ function AddContact({ addContact }) {
     }
   }, [isSubmitSuccessful]);
   const onSubmit = (data) => {
-    console.log(data);
+    // show flash message
+    toast.success("Contact is added successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    // adding contacts
+    addContact(data);
   };
   return (
     <>
@@ -77,7 +101,7 @@ function AddContact({ addContact }) {
               type="text"
               name="firstName"
               id="firstName"
-              defaultValue=""
+              defaultValue={firstName}
               {...register("firstName")}
               isInvalid={errors?.firstName}
               placeholder="Enter Your First Name"
@@ -99,7 +123,7 @@ function AddContact({ addContact }) {
               type="text"
               name="lastName"
               id="lastName"
-              defaultValue=""
+              defaultValue={lastName}
               {...register("lastName")}
               isInvalid={errors?.lastName}
               placeholder="Enter Your Last Name"
@@ -121,7 +145,7 @@ function AddContact({ addContact }) {
               type="email"
               name="email"
               id="email"
-              defaultValue=""
+              defaultValue={email}
               {...register("email")}
               isInvalid={errors?.email}
               placeholder="Enter Your Email"
@@ -142,7 +166,7 @@ function AddContact({ addContact }) {
             <Form.Select
               name="profession"
               id="profession"
-              defaultValue=""
+              defaultValue={profession}
               {...register("profession")}
               isInvalid={errors?.profession}
               aria-label="Select your profession"
@@ -171,6 +195,7 @@ function AddContact({ addContact }) {
               type="text"
               name="image"
               id="image"
+              defaultValue={image}
               {...register("image")}
               isInvalid={errors?.image}
               placeholder="Enter Profile picture Url"
@@ -243,7 +268,7 @@ function AddContact({ addContact }) {
               type="text"
               name="bio"
               id="bio"
-              defaultValue=""
+              defaultValue={bio}
               {...register("bio")}
               isInvalid={errors?.bio}
               placeholder="Enter Your Bio"

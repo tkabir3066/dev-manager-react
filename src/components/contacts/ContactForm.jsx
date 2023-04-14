@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
   firstName: yup
@@ -34,7 +35,7 @@ const schema = yup.object({
     .min(10, "Bio must have al least 10 characters")
     .max(300, "Bio must be at most 300 characters"),
 });
-function AddContact({ addContact }) {
+function ContactForm({ addContact, contact, updateContact }) {
   const {
     register,
     handleSubmit,
@@ -44,16 +45,22 @@ function AddContact({ addContact }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({ resolver: yupResolver(schema) });
 
+  const navigate = useNavigate();
   const defaultValues = {
-    firstName: "Tutul",
-    lastName: "Kabir",
-    email: "tutulkabir@gmail.com",
-    profession: "webDeveloper",
-    image: "https://randomuser.me/api/portraits/men/85.jpg",
-    bio: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    firstName: contact?.firstName || "Tutul",
+    lastName: contact?.lastName || "Kabir",
+    email: contact?.email || "tutulkabir@gmail.com",
+    profession: contact?.profession || "webDeveloper",
+    image: contact?.image || "https://randomuser.me/api/portraits/men/85.jpg",
+    bio:
+      contact?.bio ||
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    gender: contact?.gender || "male",
+    dateOfBirth: contact?.dateOfBirth || new Date(),
   };
 
-  const { firstName, lastName, email, profession, image, bio } = defaultValues;
+  const { firstName, lastName, email, profession, image, bio, gender } =
+    defaultValues;
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
@@ -72,23 +79,26 @@ function AddContact({ addContact }) {
     }
   }, [isSubmitSuccessful]);
   const onSubmit = (data) => {
+    const id = contact?.id;
     // show flash message
-    toast.success("Contact is added successfully", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    // adding contacts
-    addContact(data);
+
+    if (id) {
+      toast.success("Contact is updated successfully");
+      updateContact(data, id);
+    } else {
+      toast.success("Contact is added successfully");
+      // adding contacts
+      addContact(data);
+    }
+
+    navigate("/contacts");
   };
   return (
     <>
-      <h2 className="text-center">AddContact</h2>;
+      <h2 className="text-center">
+        {contact?.id ? "Edit Contact" : "Add Contact"}
+      </h2>
+      ;
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group as={Row} className="mb-3">
           <Col sm={3}>
@@ -238,7 +248,7 @@ function AddContact({ addContact }) {
               type="radio"
               name="gender"
               id="gender"
-              defaultChecked={true}
+              defaultChecked={gender === "male"}
               {...register("gender")}
               value="male"
               label="Male"
@@ -249,6 +259,7 @@ function AddContact({ addContact }) {
               type="radio"
               name="gender"
               id="gender"
+              defaultChecked={gender === "female"}
               {...register("gender")}
               value="female"
               label="Female"
@@ -279,11 +290,11 @@ function AddContact({ addContact }) {
           </Col>
         </Form.Group>
         <Button variant="primary" size="md" type="submit">
-          Add Contact
+          {contact?.id ? "Update Contact" : "Add Contact"}
         </Button>
       </Form>
     </>
   );
 }
 
-export default AddContact;
+export default ContactForm;

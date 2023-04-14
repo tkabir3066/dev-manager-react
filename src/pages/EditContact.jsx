@@ -1,13 +1,15 @@
 import React from "react";
 import ContactForm from "../components/contacts/ContactForm";
 import { useParams } from "react-router-dom";
-function EditContact() {
+function EditContact({ contacts, updateContact }) {
   const params = useParams();
   const { id } = params;
   console.log(params);
+
+  const foundContact = contacts.find((contact) => contact.id === id);
   return (
     <>
-      <ContactForm />
+      <ContactForm contact={foundContact} updateContact={updateContact} />
     </>
   );
 }

@@ -19,7 +19,7 @@ const initialContacts = [
     lastName: "PfertNer",
     email: "bpfertner0@drupal.org",
     profession: "Web Developer",
-    gender: "Female",
+    gender: "female",
     image: "https://randomuser.me/api/portraits/women/75.jpg",
     dateOfBirth: "17/05/1996",
     bio: "all about me",
@@ -30,7 +30,7 @@ const initialContacts = [
     lastName: "Pitt",
     email: "bradpitt233@drupal.org",
     profession: "Software Developer",
-    gender: "Male",
+    gender: "male",
     image: "https://randomuser.me/api/portraits/men/76.jpg",
     dateOfBirth: "14/11/1987",
     bio: "all about me",
@@ -41,7 +41,7 @@ const initialContacts = [
     lastName: "Hayden",
     email: "philhayden25@gmail.com",
     profession: "Digital Marketer",
-    gender: "Male",
+    gender: "male",
     image: "https://randomuser.me/api/portraits/men/77.jpg",
     dateOfBirth: "12/03/1991",
     bio: "all about me",
@@ -52,7 +52,7 @@ const initialContacts = [
     lastName: "Smith",
     email: "mariasmith124@gmail.com",
     profession: "Data Analyst",
-    gender: "Female",
+    gender: "female",
     image: "https://randomuser.me/api/portraits/women/78.jpg",
     dateOfBirth: "08/03/1993",
     bio: "all about me",
@@ -85,7 +85,7 @@ const initialContacts = [
     lastName: "Jacob",
     email: "bellajacob@drupal.org",
     profession: "Artificial Intelligence",
-    gender: "Female",
+    gender: "female",
     image: "https://randomuser.me/api/portraits/women/81.jpg",
     dateOfBirth: "06/12/1996",
     bio: "all about me",
@@ -96,7 +96,7 @@ const initialContacts = [
     lastName: "Philip",
     email: "jemimaphilip23@drupal.org",
     profession: "Artificial Intelligence",
-    gender: "Female",
+    gender: "female",
     image: "https://randomuser.me/api/portraits/women/82.jpg",
     dateOfBirth: "17/08/1996",
     bio: "all about me",
@@ -110,6 +110,21 @@ function App() {
     setContacts(updatedContacts);
   };
 
+  const updateContact = (contactToUpdate, id) => {
+    console.log(contactToUpdate, id);
+
+    const contactWithUpdate = contacts.map((contact) => {
+      if (contact.id === id) {
+        return {
+          ...contactToUpdate,
+        };
+      } else {
+        return contact;
+      }
+    });
+
+    setContacts(contactWithUpdate);
+  };
   const addContact = (contact) => {
     const addToContact = {
       id: uuidv4(),
@@ -152,7 +167,15 @@ function App() {
               path="/add-contact"
               element={<AddContact addContact={addContact} />}
             />
-            <Route path="/edit-contact/:id" element={<EditContact />} />
+            <Route
+              path="/edit-contact/:id"
+              element={
+                <EditContact
+                  contacts={contacts}
+                  updateContact={updateContact}
+                />
+              }
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />

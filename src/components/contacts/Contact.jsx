@@ -3,6 +3,7 @@ import { Card, ListGroup, Button } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import { object } from "yup";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 function Contact({ contact, deleteContact }) {
   const {
     id,
@@ -15,6 +16,11 @@ function Contact({ contact, deleteContact }) {
     gender,
     dateOfBirth,
   } = contact;
+
+  const handleDelete = () => {
+    toast.success("Contact is deleted successfully");
+    deleteContact(id);
+  };
   return (
     <Card className="mb-3">
       <div className="d-flex">
@@ -54,11 +60,7 @@ function Contact({ contact, deleteContact }) {
               </Button>
             </Card.Link>
             <Card.Link>
-              <Button
-                variant="danger ms-3"
-                size="md"
-                onClick={() => deleteContact(id)}
-              >
+              <Button variant="danger ms-3" size="md" onClick={handleDelete}>
                 <FaTrashAlt />
               </Button>
             </Card.Link>

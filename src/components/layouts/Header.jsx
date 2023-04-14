@@ -1,11 +1,12 @@
 import React from "react";
 import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
+import { NavLink, Link } from "react-router-dom";
 
 function Header() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#" className="brand">
+        <Navbar.Brand as={Link} to="/" className="brand">
           Dev Manager
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -15,11 +16,17 @@ function Header() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-
-            <Nav.Link href="#" disabled>
-              Link
+            <Nav.Link as={NavLink} to="/contacts">
+              Contacts
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/add-contact">
+              Add Contact
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/register">
+              Register
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/login">
+              Login
             </Nav.Link>
           </Nav>
           <Form className="d-flex">

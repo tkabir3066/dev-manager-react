@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import FormTextInput from "../layouts/FormTextInput";
 
 const schema = yup.object({
   firstName: yup
@@ -100,49 +101,22 @@ function ContactForm({ addContact, contact, updateContact }) {
       </h2>
       ;
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group as={Row} className="mb-3">
-          <Col sm={3}>
-            <Form.Label htmlFor="firstName" column>
-              First Name
-            </Form.Label>
-          </Col>
-          <Col sm={9}>
-            <Form.Control
-              type="text"
-              name="firstName"
-              id="firstName"
-              defaultValue={firstName}
-              {...register("firstName")}
-              isInvalid={errors?.firstName}
-              placeholder="Enter Your First Name"
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors?.firstName?.message}
-            </Form.Control.Feedback>
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3">
-          <Col sm={3}>
-            <Form.Label htmlFor="lastName" column>
-              Last Name
-            </Form.Label>
-          </Col>
-          <Col sm={9}>
-            <Form.Control
-              type="text"
-              name="lastName"
-              id="lastName"
-              defaultValue={lastName}
-              {...register("lastName")}
-              isInvalid={errors?.lastName}
-              placeholder="Enter Your Last Name"
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors?.lastName?.message}
-            </Form.Control.Feedback>
-          </Col>
-        </Form.Group>
+        <FormTextInput
+          label="First Name"
+          name="firstName"
+          placeholder="Enter your First Name"
+          defaultValue={firstName}
+          register={register}
+          errors={errors}
+        />
+        <FormTextInput
+          label="Last Name"
+          name="lastName"
+          placeholder="Enter your Last Name"
+          defaultValue={lastName}
+          register={register}
+          errors={errors}
+        />
 
         <Form.Group as={Row} className="mb-3">
           <Col sm={3}>
@@ -267,7 +241,16 @@ function ContactForm({ addContact, contact, updateContact }) {
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row} className="mb-3">
+        <FormTextInput
+          label="Bio"
+          name="bio"
+          placeholder="Enter your Bio"
+          defaultValue={bio}
+          register={register}
+          errors={errors}
+          as="textarea"
+        />
+        {/* <Form.Group as={Row} className="mb-3">
           <Col sm={3}>
             <Form.Label htmlFor="bio" column>
               Bio
@@ -288,7 +271,8 @@ function ContactForm({ addContact, contact, updateContact }) {
               {errors?.bio?.message}
             </Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group> */}
+
         <Button variant="primary" size="md" type="submit">
           {contact?.id ? "Update Contact" : "Add Contact"}
         </Button>

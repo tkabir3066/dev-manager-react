@@ -1,18 +1,7 @@
-import React, { useContext, useState } from "react";
-import Contacts from "./pages/Contacts";
-import Header from "./components/layouts/Header";
-import { Container } from "react-bootstrap";
+import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ToastContainer } from "react-toastify";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
-import AddContact from "./pages/AddContact";
-import EditContact from "./pages/EditContact";
-import ContactDetails from "./pages/ContactDetails";
-import { ContactContext } from "./context/Contact.Context";
+//create context
+export const ContactContext = createContext();
 
 const initialContacts = [
   {
@@ -105,43 +94,45 @@ const initialContacts = [
   },
 ];
 
-function App() {
+//create provider
+export const ContactProvider = ({ children }) => {
+  const [contacts, setContacts] = useState(initialContacts);
+  const deleteContact = (id) => {
+    const updatedContacts = contacts.filter((contact) => contact.id !== id);
+    setContacts(updatedContacts);
+  };
+
+  const updateContact = (contactToUpdate, id) => {
+    console.log(contactToUpdate, id);
+
+    const contactWithUpdate = contacts.map((contact) => {
+      if (contact.id === id) {
+        return {
+          id,
+          ...contactToUpdate,
+        };
+      } else {
+        return contact;
+      }
+    });
+
+    setContacts(contactWithUpdate);
+  };
+  const addContact = (contact) => {
+    const addToContact = {
+      id: uuidv4(),
+      ...contact,
+    };
+
+    setContacts([addToContact, ...contacts]);
+  };
+  const value = {
+    contacts,
+    deleteContact,
+    updateContact,
+    addContact,
+  };
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-
-      <BrowserRouter>
-        <Header />
-
-        <Container
-          style={{ width: "800px", margin: "0 auto" }}
-          className="pt-5"
-        >
-          <Routes>
-            <Route index element={<Home />} />
-            <Route path="/contacts" element={<Contacts />} />
-            <Route path="/add-contact" element={<AddContact />} />
-            <Route path="/contacts/:id" element={<ContactDetails />} />
-            <Route path="/edit-contact/:id" element={<EditContact />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
-    </>
+    <ContactContext.Provider value={value}>{children}</ContactContext.Provider>
   );
-}
-
-export default App;
+};

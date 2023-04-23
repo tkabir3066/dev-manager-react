@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import { object } from "yup";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
-function Contact({ contact, deleteContact }) {
+import { Link } from "react-router-dom";
+import { ContactContext } from "../../context/Contact.Context";
+
+function Contact({ contact }) {
+  const { deleteContact } = useContext(ContactContext);
   const {
     id,
     firstName,
@@ -54,7 +58,7 @@ function Contact({ contact, deleteContact }) {
           </ListGroup>
 
           <div className="card-btn mt-3">
-            <Card.Link>
+            <Card.Link as={Link} to={`/contacts/${id}`}>
               <Button variant="warning ms-3" size="md" type="view">
                 <FaEye />
               </Button>

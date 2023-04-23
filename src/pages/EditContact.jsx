@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import ContactForm from "../components/contacts/ContactForm";
 import { useParams } from "react-router-dom";
-function EditContact({ contacts, updateContact }) {
+import { ContactContext } from "../context/Contact.Context";
+function EditContact() {
+  const { contacts, updateContact } = useContext(ContactContext);
   const params = useParams();
   const { id } = params;
   console.log(params);

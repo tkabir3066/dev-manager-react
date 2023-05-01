@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 //create context
 export const ContactContext = createContext();
@@ -12,7 +12,7 @@ const initialContacts = [
     profession: "Web Developer",
     gender: "female",
     image: "https://randomuser.me/api/portraits/women/75.jpg",
-    dateOfBirth: "17/05/1996",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -23,7 +23,7 @@ const initialContacts = [
     profession: "Software Developer",
     gender: "male",
     image: "https://randomuser.me/api/portraits/men/76.jpg",
-    dateOfBirth: "14/11/1987",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -34,7 +34,7 @@ const initialContacts = [
     profession: "Digital Marketer",
     gender: "male",
     image: "https://randomuser.me/api/portraits/men/77.jpg",
-    dateOfBirth: "12/03/1991",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -45,7 +45,7 @@ const initialContacts = [
     profession: "Data Analyst",
     gender: "female",
     image: "https://randomuser.me/api/portraits/women/78.jpg",
-    dateOfBirth: "08/03/1993",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -56,7 +56,7 @@ const initialContacts = [
     profession: "Data Analyst",
     gender: "male",
     image: "https://randomuser.me/api/portraits/men/79.jpg",
-    dateOfBirth: "11/11/1990",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -67,7 +67,7 @@ const initialContacts = [
     profession: "Machine Learning",
     gender: "male",
     image: "https://randomuser.me/api/portraits/men/80.jpg",
-    dateOfBirth: "07/12/1988",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -78,7 +78,7 @@ const initialContacts = [
     profession: "Artificial Intelligence",
     gender: "female",
     image: "https://randomuser.me/api/portraits/women/81.jpg",
-    dateOfBirth: "06/12/1996",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
   {
@@ -89,42 +89,71 @@ const initialContacts = [
     profession: "Artificial Intelligence",
     gender: "female",
     image: "https://randomuser.me/api/portraits/women/82.jpg",
-    dateOfBirth: "17/08/1996",
+    dateOfBirth: new Date(),
     bio: "all about me",
   },
 ];
 
+const ADD_CONTACT = "ADD_CONTACT";
+const DELETE_CONTACT = "DELETE_CONTACT";
+const UPDATE_CONTACT = "UPDATE_CONTACT";
+
+const contactsReducer = (state, action) => {
+  const { type, payLoad } = action;
+  // if (action.type === "DELETE_CONTACT") {
+  //   const updatedContacts = state.filter(
+  //     (contact) => contact.id !== action.payLoad
+  //   );
+  // }
+
+  switch (type) {
+    case DELETE_CONTACT:
+      const updatedContacts = state.filter((contact) => contact.id !== payLoad);
+      return updatedContacts;
+
+    case ADD_CONTACT:
+      const newContact = {
+        id: uuidv4(),
+        ...payLoad,
+      };
+
+      return [newContact, ...state];
+
+    case UPDATE_CONTACT:
+      const { id, contactToUpdate } = payLoad;
+      const contacts = state.map((contact) => {
+        if (contact.id === id) {
+          return {
+            id,
+            ...contactToUpdate,
+          };
+        } else {
+          return contact;
+        }
+      });
+
+      return [...contacts];
+
+    default:
+      return state;
+  }
+};
 //create provider
 export const ContactProvider = ({ children }) => {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts, dispatch] = useReducer(contactsReducer, initialContacts);
   const deleteContact = (id) => {
-    const updatedContacts = contacts.filter((contact) => contact.id !== id);
-    setContacts(updatedContacts);
+    // const updatedContacts = contacts.filter((contact) => contact.id !== id);
+
+    dispatch({ type: DELETE_CONTACT, payLoad: id });
   };
 
   const updateContact = (contactToUpdate, id) => {
-    console.log(contactToUpdate, id);
-
-    const contactWithUpdate = contacts.map((contact) => {
-      if (contact.id === id) {
-        return {
-          id,
-          ...contactToUpdate,
-        };
-      } else {
-        return contact;
-      }
-    });
-
-    setContacts(contactWithUpdate);
+    dispatch({ type: UPDATE_CONTACT, payLoad: { id, contactToUpdate } });
   };
   const addContact = (contact) => {
-    const addToContact = {
-      id: uuidv4(),
-      ...contact,
-    };
+    dispatch({ type: ADD_CONTACT, payLoad: contact });
 
-    setContacts([addToContact, ...contacts]);
+    // setContacts([addToContact, ...contacts]);
   };
   const value = {
     contacts,

@@ -8,7 +8,7 @@ function FormTextInput({
   defaultValue,
   register,
   errors,
-  as,
+  ...rest
 }) {
   return (
     <Form.Group as={Row} className="mb-3">
@@ -26,7 +26,7 @@ function FormTextInput({
           {...register(name)}
           isInvalid={errors?.name}
           placeholder={placeholder}
-          {...(as ? "textarea" : "")}
+          {...rest}
         />
         <Form.Control.Feedback type="invalid">
           {errors[name]?.message}

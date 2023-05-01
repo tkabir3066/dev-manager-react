@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ContactProvider } from "./context/Contact.Context";
+import { AuthProvider } from "./context/Auth.Context";
 
 //== Dev Manager ==//
 // CRUD
@@ -21,8 +22,10 @@ import { ContactProvider } from "./context/Contact.Context";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ContactProvider>
-      <App />
-    </ContactProvider>
+    <AuthProvider>
+      <ContactProvider>
+        <App />
+      </ContactProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

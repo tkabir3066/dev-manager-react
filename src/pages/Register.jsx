@@ -43,13 +43,12 @@ function Register() {
   const { registerUser } = useContext(AuthContext);
   const onSubmit = (data) => {
     // registering user
-
     registerUser({
       username: data.username,
       email: data.email,
       password: data.password,
     });
-    // console.log(data);
+    console.log(data);
   };
   return (
     <>

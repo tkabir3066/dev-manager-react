@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./routes/App";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ContactProvider } from "./context/Contact.Context";
 import { AuthProvider } from "./context/Auth.Context";
+import { BrowserRouter } from "react-router-dom";
 
 //== Dev Manager ==//
 // CRUD
@@ -22,10 +23,12 @@ import { AuthProvider } from "./context/Auth.Context";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <ContactProvider>
-        <App />
-      </ContactProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ContactProvider>
+          <App />
+        </ContactProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
